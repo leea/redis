@@ -77,6 +77,7 @@ ifeq ($(MALLOC),jemalloc)
 endif
 
 # Build PIC for SODA compatible objects
+DEP_CFLAGS= -fPIC
 FINAL_CFLAGS+= -fPIC
 SODA_LDFLAGS= -shared -export-dynamic 
 
@@ -140,7 +141,7 @@ persist-settings: distclean
 	echo REDIS_LDFLAGS=$(REDIS_LDFLAGS) >> .make-settings
 	echo PREV_FINAL_CFLAGS=$(FINAL_CFLAGS) >> .make-settings
 	echo PREV_FINAL_LDFLAGS=$(FINAL_LDFLAGS) >> .make-settings
-	-(cd ../deps && $(MAKE) $(DEPENDENCY_TARGETS))
+	-(cd ../deps && $(MAKE) CFLAGS=$(DEP_CFLAGS) $(DEPENDENCY_TARGETS))
 
 .PHONY: persist-settings
 
