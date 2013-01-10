@@ -77,7 +77,7 @@ ifeq ($(MALLOC),jemalloc)
 endif
 
 # Build PIC for SODA compatible objects
-DEP_CFLAGS= -fPIC
+DEP_CFLAGS= -fPIC $(CFLAGS)
 FINAL_CFLAGS+= -fPIC
 SODA_LDFLAGS= -shared -export-dynamic 
 
@@ -115,7 +115,7 @@ REDIS_CHECK_DUMP_OBJ= redis-check-dump.o lzf_c.o lzf_d.o crc64.o
 REDIS_CHECK_AOF_NAME= redis-check-aof
 REDIS_CHECK_AOF_OBJ= redis-check-aof.o
 
-all: $(REDIS_SERVER_NAME) $(REDIS_SENTINEL_NAME) $(REDIS_CLI_NAME) $(REDIS_BENCHMARK_NAME) $(REDIS_CHECK_DUMP_NAME) $(REDIS_CHECK_AOF_NAME)
+all: $(REDIS_SERVER_NAME) $(REDIS_SENTINEL_NAME) $(REDIS_CLI_NAME) $(REDIS_BENCHMARK_NAME) $(REDIS_CHECK_DUMP_NAME) $(REDIS_CHECK_AOF_NAME) $(REDIS_SERVER_SODA)
 	@echo ""
 	@echo "Hint: To run 'make test' is a good idea ;)"
 	@echo ""
@@ -141,7 +141,7 @@ persist-settings: distclean
 	echo REDIS_LDFLAGS=$(REDIS_LDFLAGS) >> .make-settings
 	echo PREV_FINAL_CFLAGS=$(FINAL_CFLAGS) >> .make-settings
 	echo PREV_FINAL_LDFLAGS=$(FINAL_LDFLAGS) >> .make-settings
-	-(cd ../deps && $(MAKE) CFLAGS=$(DEP_CFLAGS) $(DEPENDENCY_TARGETS))
+	-(cd ../deps && $(MAKE) CFLAGS="$(DEP_CFLAGS)" $(DEPENDENCY_TARGETS))
 
 .PHONY: persist-settings
 
